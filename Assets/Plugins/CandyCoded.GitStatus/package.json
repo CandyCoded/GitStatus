@@ -1,0 +1,27 @@
+{
+  "name": "xyz.candycoded.gitstatus",
+  "displayName": "GitStatus",
+  "version": "1.0.0",
+  "unity": "2019.2",
+  "unityRelease": "13f1",
+  "description": "Editor panel that displays the current git status.",
+  "license": "MIT",
+  "dependencies": {
+    "com.unity.editorcoroutines": "0.0.2-preview.1"
+  },
+  "keywords": [
+    "unity",
+    "editor",
+    "git"
+  ],
+  "author": {
+    "name": "Scott Doxey",
+    "email": "hello@scottdoxey.com",
+    "homepage": "http://scottdoxey.com/"
+  },
+  "homepage": "https://github.com/CandyCoded/GitStatus",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:CandyCoded/GitStatus.git"
+  }
+}
