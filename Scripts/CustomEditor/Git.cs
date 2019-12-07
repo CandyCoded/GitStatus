@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Debug = UnityEngine.Debug;
 
 namespace CandyCoded.GitStatus
 {
@@ -59,6 +60,28 @@ namespace CandyCoded.GitStatus
         {
 
             return AllChanges().Where(file => file.StartsWith("??")).ToArray();
+
+        }
+
+        public static void DiscardChanges(string path)
+        {
+
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = "/usr/local/bin/git",
+                Arguments = $"checkout {path}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            });
+
+            if (process.StandardError.ReadLine().StartsWith("error: pathspec"))
+            {
+
+                Debug.LogError("File not tracked by git.");
+
+            }
 
         }
 
