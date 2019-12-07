@@ -58,7 +58,7 @@ namespace CandyCoded.GitStatus
             GUILayout.Label($"Untracked Files: {_untrackedFiles?.Length}");
             GUILayout.Label($"Last Updated: {_lastUpdated}");
 
-            if (GUILayout.Button("Force Update"))
+            if (GUILayout.Button("Refresh"))
             {
 
                 UpdateData();
