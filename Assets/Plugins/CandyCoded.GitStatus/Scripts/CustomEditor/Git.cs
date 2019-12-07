@@ -29,6 +29,41 @@ namespace CandyCoded.GitStatus
 
         }
 
+        public static string[] Branches()
+        {
+
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = "/usr/local/bin/git",
+                Arguments = "for-each-ref --format='%(refname:short)' refs/heads",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            });
+
+            return process?.StandardOutput
+                .ReadToEnd()
+                .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .ToArray();
+
+        }
+
+        public static void CheckoutBranch(string branch)
+        {
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "/usr/local/bin/git",
+                Arguments = $"checkout {branch}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            });
+
+        }
+
         public static string[] AllChanges()
         {
 

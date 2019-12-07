@@ -18,6 +18,8 @@ namespace CandyCoded.GitStatus
 
         private string _branch;
 
+        private string[] _branches;
+
         private string[] _changedFiles;
 
         private string[] _untrackedFiles;
@@ -53,7 +55,36 @@ namespace CandyCoded.GitStatus
         private void OnGUI()
         {
 
-            GUILayout.Label($"Current Branch: {_branch}");
+            GUILayout.Space(5);
+
+            var selectedBranch = Array.IndexOf(_branches, _branch);
+
+            selectedBranch = EditorGUILayout.Popup("Branch:", selectedBranch, _branches);
+
+            if (!_branches[selectedBranch].Equals(_branch))
+            {
+
+                if (_changedFiles?.Length > 0)
+                {
+
+                    EditorUtility.DisplayDialog(
+                        $"Unable to checkout branch",
+                        $"Unable to checkout {_branches[selectedBranch]} as with {_changedFiles?.Length} changes. " +
+                        "Commit, discard or stash before checking out a different branch.",
+                        "Ok");
+
+                }
+                else
+                {
+
+                    Git.CheckoutBranch(_branches[selectedBranch]);
+
+                    _branch = _branches[selectedBranch];
+
+                }
+
+            }
+
             GUILayout.Label($"Number of Changes: {_changedFiles?.Length}");
             GUILayout.Label($"Untracked Files: {_untrackedFiles?.Length}");
             GUILayout.Label($"Last Updated: {_lastUpdated}");
@@ -71,6 +102,8 @@ namespace CandyCoded.GitStatus
         {
 
             _branch = Git.Branch();
+
+            _branches = Git.Branches();
 
             _changedFiles = Git.ChangedFiles();
 
