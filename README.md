@@ -15,7 +15,7 @@
 ```json
 {
   "dependencies": {
-    "xyz.candycoded.gitstatus": "https://github.com/CandyCoded/gitstatus.git#v1.0.0",
+    "xyz.candycoded.gitstatus": "https://github.com/CandyCoded/gitstatus.git#v1.1.0",
     ...
   }
 }
@@ -26,7 +26,7 @@
 ```json
 {
   "dependencies": {
-    "xyz.candycoded.gitstatus": "1.0.0",
+    "xyz.candycoded.gitstatus": "1.1.0",
     ...
   },
   "scopedRegistries": [
