@@ -50,7 +50,7 @@ namespace CandyCoded.GitStatus
 
             return process?.StandardOutput
                 .ReadToEnd()
-                .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToArray();
 
         }
