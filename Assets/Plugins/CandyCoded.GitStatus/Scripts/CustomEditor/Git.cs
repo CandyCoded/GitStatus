@@ -2,6 +2,8 @@
 
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Diagnostics;
 using System.Linq;
 using Debug = UnityEngine.Debug;
@@ -48,10 +50,18 @@ namespace CandyCoded.GitStatus
                 CreateNoWindow = true
             });
 
-            return process?.StandardOutput
-                .ReadToEnd()
-                .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
+            var branches = new List<string>();
+
+            var stringReader = new StringReader(process?.StandardOutput.ReadToEnd());
+
+            while (stringReader.ReadLine() is string line)
+            {
+
+                branches.Add(line.Trim('\''));
+
+            }
+
+            return branches.ToArray();
 
         }
 
