@@ -12,12 +12,14 @@ namespace CandyCoded.GitStatus
     public static class Git
     {
 
+        public static string GitPath => "/usr/local/bin/git";
+
         public static string Branch()
         {
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = "rev-parse --abbrev-ref HEAD",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -34,7 +36,7 @@ namespace CandyCoded.GitStatus
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = "for-each-ref --format='%(refname:short)' refs/heads",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -54,7 +56,7 @@ namespace CandyCoded.GitStatus
 
             Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = $"checkout {branch}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -69,7 +71,7 @@ namespace CandyCoded.GitStatus
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = "status --short --untracked-files --porcelain",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -103,7 +105,7 @@ namespace CandyCoded.GitStatus
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = $"checkout {path}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
