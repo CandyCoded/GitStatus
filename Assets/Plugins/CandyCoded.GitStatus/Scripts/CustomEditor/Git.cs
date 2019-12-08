@@ -2,6 +2,7 @@
 
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Debug = UnityEngine.Debug;
@@ -12,12 +13,18 @@ namespace CandyCoded.GitStatus
     public static class Git
     {
 
+#if UNITY_EDITOR_WIN
+        public static string GitPath => "C:\\Program Files\\Git\\cmd\\git.exe";
+#else
+        public static string GitPath => "/usr/local/bin/git";
+#endif
+
         public static string Branch()
         {
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = "rev-parse --abbrev-ref HEAD",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -34,7 +41,7 @@ namespace CandyCoded.GitStatus
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = "for-each-ref --format='%(refname:short)' refs/heads",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -42,10 +49,16 @@ namespace CandyCoded.GitStatus
                 CreateNoWindow = true
             });
 
-            return process?.StandardOutput
-                .ReadToEnd()
-                .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
+            var branches = new List<string>();
+
+            while (process?.StandardOutput.ReadLine() is string line)
+            {
+
+                branches.Add(line.Trim('\''));
+
+            }
+
+            return branches.ToArray();
 
         }
 
@@ -54,7 +67,7 @@ namespace CandyCoded.GitStatus
 
             Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = $"checkout {branch}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -69,7 +82,7 @@ namespace CandyCoded.GitStatus
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = "status --short --untracked-files --porcelain",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -103,7 +116,7 @@ namespace CandyCoded.GitStatus
 
             var process = Process.Start(new ProcessStartInfo
             {
-                FileName = "/usr/local/bin/git",
+                FileName = GitPath,
                 Arguments = $"checkout {path}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
