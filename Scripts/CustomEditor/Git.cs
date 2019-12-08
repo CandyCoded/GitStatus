@@ -12,7 +12,11 @@ namespace CandyCoded.GitStatus
     public static class Git
     {
 
+#if UNITY_EDITOR_WIN
+        public static string GitPath => "C:\\Program Files\\Git\\cmd\\git.exe";
+#else
         public static string GitPath => "/usr/local/bin/git";
+#endif
 
         public static string Branch()
         {
