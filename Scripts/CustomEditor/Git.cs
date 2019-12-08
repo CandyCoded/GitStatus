@@ -52,9 +52,7 @@ namespace CandyCoded.GitStatus
 
             var branches = new List<string>();
 
-            var stringReader = new StringReader(process?.StandardOutput.ReadToEnd());
-
-            while (stringReader.ReadLine() is string line)
+            while (process?.StandardOutput.ReadLine() is string line)
             {
 
                 branches.Add(line.Trim('\''));
