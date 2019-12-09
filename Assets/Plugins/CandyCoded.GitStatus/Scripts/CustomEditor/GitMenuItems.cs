@@ -20,6 +20,7 @@ namespace CandyCoded.GitStatus
 
         }
 
+        [MenuItem("Git/Discard Changes", false, PRIORITY)]
         [MenuItem("Assets/Discard Changes", false, PRIORITY)]
         private static void DiscardChanges()
         {
@@ -28,6 +29,7 @@ namespace CandyCoded.GitStatus
 
         }
 
+        [MenuItem("Git/Discard Changes", true, PRIORITY)]
         [MenuItem("Assets/Discard Changes", true, PRIORITY)]
         private static bool ValidateDiscardChanges()
         {
@@ -36,6 +38,7 @@ namespace CandyCoded.GitStatus
 
         }
 
+        [MenuItem("Git/Discard All Changes", false, PRIORITY)]
         [MenuItem("Assets/Discard All Changes", false, PRIORITY)]
         private static void DiscardAllChanges()
         {
@@ -53,6 +56,7 @@ namespace CandyCoded.GitStatus
 
         }
 
+        [MenuItem("Git/Discard All Changes", true, PRIORITY)]
         [MenuItem("Assets/Discard All Changes", true, PRIORITY)]
         private static bool ValidateDiscardAllChanges()
         {
