@@ -4,7 +4,7 @@
   "version": "1.1.0",
   "unity": "2019.2",
   "unityRelease": "13f1",
-  "description": "Editor panel that displays the current git status.",
+  "description": "Unity editor panel that displays the current git status.",
   "license": "MIT",
   "dependencies": {
     "com.unity.editorcoroutines": "0.0.2-preview.1"
