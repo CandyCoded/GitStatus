@@ -1,6 +1,6 @@
 # GitStatus
 
-> Editor panel that displays the current git status.
+> Unity editor panel that displays the current git status.
 
 [![npm](https://img.shields.io/npm/v/xyz.candycoded.gitstatus)](https://www.npmjs.com/package/xyz.candycoded.gitstatus)
 
