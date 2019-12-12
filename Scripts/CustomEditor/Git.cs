@@ -1,10 +1,8 @@
 // Copyright (c) Scott Doxey. All Rights Reserved. Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Debug = UnityEngine.Debug;
 
 namespace CandyCoded.GitStatus
@@ -74,26 +72,6 @@ namespace CandyCoded.GitStatus
                 RedirectStandardError = true,
                 CreateNoWindow = true
             });
-
-        }
-
-        public static string[] AllChanges()
-        {
-
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = GitPath,
-                Arguments = "status --short --untracked-files --porcelain",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            });
-
-            return process?.StandardOutput
-                .ReadToEnd()
-                .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
 
         }
 
