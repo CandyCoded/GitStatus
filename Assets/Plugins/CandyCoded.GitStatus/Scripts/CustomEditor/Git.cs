@@ -100,14 +100,52 @@ namespace CandyCoded.GitStatus
         public static string[] ChangedFiles()
         {
 
-            return AllChanges().Except(UntrackedFiles()).ToArray();
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = GitPath,
+                Arguments = "status --short --untracked-files=no --porcelain",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            });
+
+            var changes = new List<string>();
+
+            while (process?.StandardOutput.ReadLine() is string line)
+            {
+
+                changes.Add(line.Trim().TrimStart('M', ' '));
+
+            }
+
+            return changes.ToArray();
 
         }
 
         public static string[] UntrackedFiles()
         {
 
-            return AllChanges().Where(file => file.StartsWith("??")).ToArray();
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = GitPath,
+                Arguments = "ls-files --others --exclude-standard",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            });
+
+            var changes = new List<string>();
+
+            while (process?.StandardOutput.ReadLine() is string line)
+            {
+
+                changes.Add(line.Trim());
+
+            }
+
+            return changes.ToArray();
 
         }
 
