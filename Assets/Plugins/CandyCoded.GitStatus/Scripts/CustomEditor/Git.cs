@@ -1,10 +1,8 @@
 // Copyright (c) Scott Doxey. All Rights Reserved. Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Debug = UnityEngine.Debug;
 
 namespace CandyCoded.GitStatus
@@ -77,37 +75,55 @@ namespace CandyCoded.GitStatus
 
         }
 
-        public static string[] AllChanges()
+        public static string[] ChangedFiles()
         {
 
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = GitPath,
-                Arguments = "status --short --untracked-files --porcelain",
+                Arguments = "status --short --untracked-files=no --porcelain",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true
             });
 
-            return process?.StandardOutput
-                .ReadToEnd()
-                .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
+            var changes = new List<string>();
 
-        }
+            while (process?.StandardOutput.ReadLine() is string line)
+            {
 
-        public static string[] ChangedFiles()
-        {
+                changes.Add(line.Trim().TrimStart('M', ' '));
 
-            return AllChanges().Except(UntrackedFiles()).ToArray();
+            }
+
+            return changes.ToArray();
 
         }
 
         public static string[] UntrackedFiles()
         {
 
-            return AllChanges().Where(file => file.StartsWith("??")).ToArray();
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = GitPath,
+                Arguments = "ls-files --others --exclude-standard",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            });
+
+            var changes = new List<string>();
+
+            while (process?.StandardOutput.ReadLine() is string line)
+            {
+
+                changes.Add(line.Trim());
+
+            }
+
+            return changes.ToArray();
 
         }
 
