@@ -3,10 +3,10 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections;
-using UnityEditorInternal;
-using UnityEngine;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine;
 
 namespace CandyCoded.GitStatus
 {
@@ -68,7 +68,7 @@ namespace CandyCoded.GitStatus
                 {
 
                     EditorUtility.DisplayDialog(
-                        $"Unable to checkout branch",
+                        "Unable to checkout branch",
                         $"Unable to checkout {_branches[selectedBranch]} as with {_changedFiles?.Length} changes. " +
                         "Commit, discard or stash before checking out a different branch.",
                         "Ok");
