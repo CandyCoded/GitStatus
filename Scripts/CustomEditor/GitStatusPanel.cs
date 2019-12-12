@@ -145,6 +145,13 @@ namespace CandyCoded.GitStatus
 
         }
 
+        private void OnFocus()
+        {
+
+            UpdateData();
+
+        }
+
     }
 
 }
