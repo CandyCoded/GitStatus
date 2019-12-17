@@ -133,7 +133,7 @@ namespace CandyCoded.GitStatus
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = GitPath,
-                Arguments = $"checkout {path}",
+                Arguments = $@"checkout ""{path}""",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
