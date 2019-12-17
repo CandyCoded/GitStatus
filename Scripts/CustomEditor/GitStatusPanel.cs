@@ -30,7 +30,7 @@ namespace CandyCoded.GitStatus
 
         private bool _isEditorFocused;
 
-        [MenuItem("Window/CandyCoded/Git Status")]
+        [MenuItem("Git/Git Status")]
         public static void ShowWindow()
         {
 
