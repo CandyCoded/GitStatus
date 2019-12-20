@@ -16,19 +16,11 @@ namespace CandyCoded.GitStatus
 
         private const float ICON_PADDING = 2;
 
-        private static string[] _changedFiles;
-
-        private static string[] _untrackedFiles;
-
         static ProjectPanel()
         {
 
             EditorApplication.projectWindowItemOnGUI -= ProjectWindowItemOnGui;
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemOnGui;
-
-            _changedFiles = Git.ChangedFiles();
-
-            _untrackedFiles = Git.UntrackedFiles();
 
         }
 
@@ -59,31 +51,18 @@ namespace CandyCoded.GitStatus
                 iconSize - ICON_PADDING,
                 iconSize - ICON_PADDING);
 
-            if (_changedFiles.Contains(path))
+            if (GitStatus.changedFiles.Contains(path))
             {
 
                 GUI.DrawTexture(rect, GitIcons.Changed, ScaleMode.ScaleToFit);
 
             }
-            else if (_untrackedFiles.Contains(path))
+            else if (GitStatus.untrackedFiles.Contains(path))
             {
 
                 GUI.DrawTexture(rect, GitIcons.Untracked, ScaleMode.ScaleToFit);
 
             }
-
-        }
-
-        private static void OnPostprocessAllAssets(
-            string[] importedAssets,
-            string[] deletedAssets,
-            string[] movedAssets,
-            string[] movedFromAssetPaths)
-        {
-
-            _changedFiles = Git.ChangedFiles();
-
-            _untrackedFiles = Git.UntrackedFiles();
 
         }
 

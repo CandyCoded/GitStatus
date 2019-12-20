@@ -6,9 +6,6 @@
   "unityRelease": "13f1",
   "description": "Unity editor panel that displays the current git status.",
   "license": "MIT",
-  "dependencies": {
-    "com.unity.editorcoroutines": "0.0.2-preview.1"
-  },
   "keywords": [
     "unity",
     "editor",
