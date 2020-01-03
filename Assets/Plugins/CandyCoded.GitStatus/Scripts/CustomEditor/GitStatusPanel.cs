@@ -2,10 +2,7 @@
 
 #if UNITY_EDITOR
 using System;
-using System.Collections;
-using Unity.EditorCoroutines.Editor;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace CandyCoded.GitStatus
@@ -13,22 +10,6 @@ namespace CandyCoded.GitStatus
 
     public class GitStatusPanel : EditorWindow
     {
-
-        private readonly EditorWaitForSeconds _delayBetweenUpdates = new EditorWaitForSeconds(60);
-
-        private string _branch;
-
-        private string[] _branches;
-
-        private string[] _changedFiles;
-
-        private string[] _untrackedFiles;
-
-        private DateTime _lastUpdated;
-
-        private EditorCoroutine _coroutine;
-
-        private bool _isEditorFocused;
 
         [MenuItem("Git/Git Status")]
         public static void ShowWindow()
@@ -38,38 +19,24 @@ namespace CandyCoded.GitStatus
 
         }
 
-        private void Update()
-        {
-
-            if (InternalEditorUtility.isApplicationActive && !_isEditorFocused)
-            {
-
-                UpdateData();
-
-            }
-
-            _isEditorFocused = InternalEditorUtility.isApplicationActive;
-
-        }
-
         private void OnGUI()
         {
 
             GUILayout.Space(5);
 
-            var selectedBranch = Array.IndexOf(_branches, _branch);
+            var selectedBranch = Array.IndexOf(GitStatus.branches, GitStatus.branch);
 
-            selectedBranch = EditorGUILayout.Popup("Branch:", selectedBranch, _branches);
+            selectedBranch = EditorGUILayout.Popup("Branch:", selectedBranch, GitStatus.branches);
 
-            if (!_branches[selectedBranch].Equals(_branch))
+            if (!GitStatus.branches[selectedBranch].Equals(GitStatus.branch))
             {
 
-                if (_changedFiles?.Length > 0)
+                if (GitStatus.changedFiles?.Length > 0)
                 {
 
                     EditorUtility.DisplayDialog(
                         "Unable to checkout branch",
-                        $"Unable to checkout {_branches[selectedBranch]} as with {_changedFiles?.Length} changes. " +
+                        $"Unable to checkout {GitStatus.branches[selectedBranch]} as with {GitStatus.changedFiles?.Length} changes. " +
                         "Commit, discard or stash before checking out a different branch.",
                         "Ok");
 
@@ -77,78 +44,36 @@ namespace CandyCoded.GitStatus
                 else
                 {
 
-                    Git.CheckoutBranch(_branches[selectedBranch]);
-
-                    _branch = _branches[selectedBranch];
+                    Git.CheckoutBranch(GitStatus.branches[selectedBranch]);
 
                 }
 
             }
 
-            GUILayout.Label($"Number of Changes: {_changedFiles?.Length}");
-            GUILayout.Label($"Untracked Files: {_untrackedFiles?.Length}");
-            GUILayout.Label($"Last Updated: {_lastUpdated}");
+            GUILayout.Label($"Number of Changes: {GitStatus.changedFiles?.Length}");
+            GUILayout.Label($"Untracked Files: {GitStatus.untrackedFiles?.Length}");
+            GUILayout.Label($"Last Updated: {GitStatus.lastUpdated}");
 
             if (GUILayout.Button("Refresh"))
             {
 
-                UpdateData();
+                GitStatus.Update();
 
             }
 
         }
 
-        private void UpdateData()
+        private void Update()
         {
 
-            _branch = Git.Branch();
-
-            _branches = Git.Branches();
-
-            _changedFiles = Git.ChangedFiles();
-
-            _untrackedFiles = Git.UntrackedFiles();
-
-            _lastUpdated = DateTime.Now;
-
-            Repaint();
-
-        }
-
-        private IEnumerator UpdateCoroutine()
-        {
-
-            while (true)
+            if (EditorApplication.isPlaying || EditorApplication.isPaused)
             {
 
-                UpdateData();
-
-                yield return _delayBetweenUpdates;
+                return;
 
             }
 
-        }
-
-        private void OnEnable()
-        {
-
-            _coroutine = EditorCoroutineUtility.StartCoroutine(UpdateCoroutine(), this);
-
-        }
-
-        private void OnDisable()
-        {
-
-            EditorCoroutineUtility.StopCoroutine(_coroutine);
-
-            _coroutine = null;
-
-        }
-
-        private void OnFocus()
-        {
-
-            UpdateData();
+            Repaint();
 
         }
 

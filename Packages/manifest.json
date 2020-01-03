@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.unity.editorcoroutines": "0.0.2-preview.1",
     "com.unity.ide.rider": "1.1.1",
     "com.unity.test-framework": "1.1.3"
   }
