@@ -63,6 +63,20 @@ namespace CandyCoded.GitStatus
 
         }
 
+        private void Update()
+        {
+
+            if (EditorApplication.isPlaying || EditorApplication.isPaused)
+            {
+
+                return;
+
+            }
+
+            Repaint();
+
+        }
+
     }
 
 }
