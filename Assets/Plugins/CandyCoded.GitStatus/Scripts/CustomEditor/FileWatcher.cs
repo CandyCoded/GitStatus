@@ -32,7 +32,9 @@ namespace CandyCoded.GitStatus
 
             _fileSystemWatcher = new FileSystemWatcher(Application.dataPath);
 
+            _fileSystemWatcher.Created += OnChanged;
             _fileSystemWatcher.Changed += OnChanged;
+            _fileSystemWatcher.Deleted += OnChanged;
 
             _fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
             _fileSystemWatcher.Filter = "*.*";
