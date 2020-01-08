@@ -26,25 +26,36 @@ namespace CandyCoded.GitStatus
 
             var selectedBranch = Array.IndexOf(GitStatus.branches, GitStatus.branch);
 
-            selectedBranch = EditorGUILayout.Popup("Branch:", selectedBranch, GitStatus.branches);
-
-            if (!GitStatus.branches[selectedBranch].Equals(GitStatus.branch))
+            if (selectedBranch == -1)
             {
 
-                if (GitStatus.changedFiles?.Length > 0)
+                GUILayout.Label($"Branch: {GitStatus.branch}");
+
+            }
+            else
+            {
+
+                selectedBranch = EditorGUILayout.Popup("Branch:", selectedBranch, GitStatus.branches);
+
+                if (!GitStatus.branches[selectedBranch].Equals(GitStatus.branch))
                 {
 
-                    EditorUtility.DisplayDialog(
-                        "Unable to checkout branch",
-                        $"Unable to checkout {GitStatus.branches[selectedBranch]} as with {GitStatus.changedFiles?.Length} changes. " +
-                        "Commit, discard or stash before checking out a different branch.",
-                        "Ok");
+                    if (GitStatus.changedFiles?.Length > 0)
+                    {
 
-                }
-                else
-                {
+                        EditorUtility.DisplayDialog(
+                            "Unable to checkout branch",
+                            $"Unable to checkout {GitStatus.branches[selectedBranch]} as with {GitStatus.changedFiles?.Length} changes. " +
+                            "Commit, discard or stash before checking out a different branch.",
+                            "Ok");
 
-                    Git.CheckoutBranch(GitStatus.branches[selectedBranch]);
+                    }
+                    else
+                    {
+
+                        Git.CheckoutBranch(GitStatus.branches[selectedBranch]);
+
+                    }
 
                 }
 
