@@ -17,18 +17,25 @@ namespace CandyCoded.GitStatus
         public static string GitPath => "/usr/local/bin/git";
 #endif
 
-        public static string Branch()
+        public static Process GenerateProcess(string path, string arguments)
         {
 
-            var process = Process.Start(new ProcessStartInfo
+            return Process.Start(new ProcessStartInfo
             {
-                FileName = GitPath,
-                Arguments = "rev-parse --abbrev-ref HEAD",
+                FileName = path,
+                Arguments = arguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true
             });
+
+        }
+
+        public static string Branch()
+        {
+
+            var process = GenerateProcess(GitPath, "rev-parse --abbrev-ref HEAD");
 
             return process?.StandardOutput.ReadLine();
 
@@ -37,15 +44,7 @@ namespace CandyCoded.GitStatus
         public static string[] Branches()
         {
 
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = GitPath,
-                Arguments = "for-each-ref --format='%(refname:short)' refs/heads",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            });
+            var process = GenerateProcess(GitPath, "for-each-ref --format='%(refname:short)' refs/heads");
 
             var branches = new List<string>();
 
@@ -63,30 +62,14 @@ namespace CandyCoded.GitStatus
         public static void CheckoutBranch(string branch)
         {
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = GitPath,
-                Arguments = $"checkout {branch}",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            });
+            GenerateProcess(GitPath, $"checkout {branch}");
 
         }
 
         public static string[] ChangedFiles()
         {
 
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = GitPath,
-                Arguments = "status --short --untracked-files=no --porcelain",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            });
+            var process = GenerateProcess(GitPath, "status --short --untracked-files=no --porcelain");
 
             var changes = new List<string>();
 
@@ -104,15 +87,7 @@ namespace CandyCoded.GitStatus
         public static string[] UntrackedFiles()
         {
 
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = GitPath,
-                Arguments = "ls-files --others --exclude-standard",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            });
+            var process = GenerateProcess(GitPath, "ls-files --others --exclude-standard");
 
             var changes = new List<string>();
 
@@ -130,15 +105,7 @@ namespace CandyCoded.GitStatus
         public static void DiscardChanges(string path)
         {
 
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = GitPath,
-                Arguments = $@"checkout ""{path}""",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            });
+            var process = GenerateProcess(GitPath, $@"checkout ""{path}""");
 
             if (process?.StandardError.ReadLine() is string line && line.StartsWith("error: pathspec"))
             {
