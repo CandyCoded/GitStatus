@@ -140,7 +140,7 @@ namespace CandyCoded.GitStatus
                 CreateNoWindow = true
             });
 
-            if (process.StandardError.ReadLine().StartsWith("error: pathspec"))
+            if (process?.StandardError.ReadLine() is string line && line.StartsWith("error: pathspec"))
             {
 
                 Debug.LogError("File not tracked by git.");
