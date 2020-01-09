@@ -2,6 +2,7 @@
 
 #if UNITY_EDITOR
 using System;
+using System.Threading.Tasks;
 using UnityEditor;
 
 namespace CandyCoded.GitStatus
@@ -34,13 +35,17 @@ namespace CandyCoded.GitStatus
         public static void Update()
         {
 
-            branch = Git.Branch();
+            Task.Run(UpdateAsync);
 
-            branches = Git.Branches();
+        }
 
-            changedFiles = Git.ChangedFiles();
+        public static async void UpdateAsync()
+        {
 
-            untrackedFiles = Git.UntrackedFiles();
+            branch = await Git.Branch();
+            branches = await Git.Branches();
+            changedFiles = await Git.ChangedFiles();
+            untrackedFiles = await Git.UntrackedFiles();
 
             lastUpdated = DateTime.Now;
 
