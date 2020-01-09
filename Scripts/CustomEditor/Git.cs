@@ -3,6 +3,7 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Debug = UnityEngine.Debug;
 
 namespace CandyCoded.GitStatus
@@ -17,10 +18,10 @@ namespace CandyCoded.GitStatus
         public static string GitPath => "/usr/local/bin/git";
 #endif
 
-        public static Process GenerateProcess(string path, string arguments)
+        public static Task<Process> GenerateProcess(string path, string arguments)
         {
 
-            return Process.Start(new ProcessStartInfo
+            return Task.Run(() => Process.Start(new ProcessStartInfo
             {
                 FileName = path,
                 Arguments = arguments,
@@ -28,23 +29,23 @@ namespace CandyCoded.GitStatus
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true
-            });
+            }));
 
         }
 
-        public static string Branch()
+        public static async Task<string> Branch()
         {
 
-            var process = GenerateProcess(GitPath, "rev-parse --abbrev-ref HEAD");
+            var process = await GenerateProcess(GitPath, "rev-parse --abbrev-ref HEAD");
 
             return process?.StandardOutput.ReadLine();
 
         }
 
-        public static string[] Branches()
+        public static async Task<string[]> Branches()
         {
 
-            var process = GenerateProcess(GitPath, "for-each-ref --format='%(refname:short)' refs/heads");
+            var process = await GenerateProcess(GitPath, "for-each-ref --format='%(refname:short)' refs/heads");
 
             var branches = new List<string>();
 
@@ -66,10 +67,10 @@ namespace CandyCoded.GitStatus
 
         }
 
-        public static string[] ChangedFiles()
+        public static async Task<string[]> ChangedFiles()
         {
 
-            var process = GenerateProcess(GitPath, "status --short --untracked-files=no --porcelain");
+            var process = await GenerateProcess(GitPath, "status --short --untracked-files=no --porcelain");
 
             var changes = new List<string>();
 
@@ -84,10 +85,10 @@ namespace CandyCoded.GitStatus
 
         }
 
-        public static string[] UntrackedFiles()
+        public static async Task<string[]> UntrackedFiles()
         {
 
-            var process = GenerateProcess(GitPath, "ls-files --others --exclude-standard");
+            var process = await GenerateProcess(GitPath, "ls-files --others --exclude-standard");
 
             var changes = new List<string>();
 
@@ -102,10 +103,10 @@ namespace CandyCoded.GitStatus
 
         }
 
-        public static void DiscardChanges(string path)
+        public static async Task DiscardChanges(string path)
         {
 
-            var process = GenerateProcess(GitPath, $@"checkout ""{path}""");
+            var process = await GenerateProcess(GitPath, $@"checkout ""{path}""");
 
             if (process?.StandardError.ReadLine() is string line && line.StartsWith("error: pathspec"))
             {

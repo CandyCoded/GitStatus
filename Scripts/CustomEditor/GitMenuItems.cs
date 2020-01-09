@@ -3,6 +3,7 @@
 #if UNITY_EDITOR
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEditor;
 
 namespace CandyCoded.GitStatus
@@ -22,10 +23,10 @@ namespace CandyCoded.GitStatus
 
         [MenuItem("Git/Discard Changes", false, PRIORITY)]
         [MenuItem("Assets/Discard Changes", false, PRIORITY)]
-        private static void DiscardChanges()
+        private static async void DiscardChanges()
         {
 
-            Git.DiscardChanges(GetSelectedPath());
+            await Git.DiscardChanges(GetSelectedPath());
 
         }
 
@@ -40,7 +41,7 @@ namespace CandyCoded.GitStatus
 
         [MenuItem("Git/Discard All Changes", false, PRIORITY)]
         [MenuItem("Assets/Discard All Changes", false, PRIORITY)]
-        private static void DiscardAllChanges()
+        private static async void DiscardAllChanges()
         {
 
             if (EditorUtility.DisplayDialog(
@@ -50,7 +51,7 @@ namespace CandyCoded.GitStatus
                 "Cancel"))
             {
 
-                Git.DiscardChanges(GetSelectedPath());
+                await Git.DiscardChanges(GetSelectedPath());
 
             }
 
