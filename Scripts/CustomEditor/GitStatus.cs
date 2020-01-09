@@ -11,15 +11,15 @@ namespace CandyCoded.GitStatus
     public static class GitStatus
     {
 
-        public static string branch;
+        public static string branch = "HEAD";
 
-        public static string[] branches;
+        public static string[] branches = { };
 
-        public static string[] changedFiles;
+        public static string[] changedFiles = { };
 
-        public static string[] untrackedFiles;
+        public static string[] untrackedFiles = { };
 
-        public static DateTime lastUpdated;
+        public static DateTime lastUpdated = DateTime.Now;
 
         static GitStatus()
         {
