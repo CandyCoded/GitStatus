@@ -115,6 +115,17 @@ namespace CandyCoded.GitStatus
 
         }
 
+        public static async Task ForceUnlockFile(string path)
+        {
+
+            var process =
+                await GenerateProcessAsync(GitLFSPath,
+                    $@"unlock ""{path.Replace(RepoPath, "")}"" --force");
+
+            process?.WaitForExit();
+
+        }
+
         public static async Task Init()
         {
 
@@ -149,6 +160,23 @@ namespace CandyCoded.GitStatus
 
         }
 
+        public static async Task LockFile(string path)
+        {
+
+            var process = await GenerateProcessAsync(GitLFSPath,
+                $@"lock ""{path.Replace(RepoPath, "")}""");
+
+            if (process?.StandardError.ReadLine() is string line && line.StartsWith("Lock failed: missing protocol"))
+            {
+
+                throw new Exception("Locking requires git repo has been pushed to a remote.");
+
+            }
+
+            process?.WaitForExit();
+
+        }
+
         public static async Task<string> Status()
         {
 
@@ -162,6 +190,16 @@ namespace CandyCoded.GitStatus
             }
 
             return process?.StandardOutput.ReadToEnd();
+
+        }
+
+        public static async Task UnlockFile(string path)
+        {
+
+            var process = await GenerateProcessAsync(GitLFSPath,
+                $@"unlock ""{path.Replace(RepoPath, "")}""");
+
+            process?.WaitForExit();
 
         }
 
