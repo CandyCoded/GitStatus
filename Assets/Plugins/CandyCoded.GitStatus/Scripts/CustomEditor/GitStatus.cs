@@ -22,6 +22,8 @@ namespace CandyCoded.GitStatus
 
         public static string[] changedFiles = { };
 
+        public static string[] lockedFiles = { };
+
         public static string[] untrackedFiles = { };
 
         public static DateTime lastUpdated = DateTime.Now;
@@ -66,6 +68,7 @@ namespace CandyCoded.GitStatus
             branch = await Git.Branch();
             branches = await Git.Branches();
             changedFiles = await Git.ChangedFiles();
+            lockedFiles = await Git.LockedFiles();
             untrackedFiles = await Git.UntrackedFiles();
 
             lastUpdated = DateTime.Now;
