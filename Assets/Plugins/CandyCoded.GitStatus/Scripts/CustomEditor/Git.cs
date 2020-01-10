@@ -99,6 +99,29 @@ namespace CandyCoded.GitStatus
 
         }
 
+        public static async Task Init()
+        {
+
+            await GenerateProcess(GitPath, "init");
+
+        }
+
+        public static async Task<string> Status()
+        {
+
+            var process = await GenerateProcess(GitPath, "status");
+
+            if (process?.StandardError.ReadLine() is string line && line.StartsWith("fatal: not a git repository"))
+            {
+
+                throw new Exception("Path is not a git repository.");
+
+            }
+
+            return process?.StandardOutput.ReadToEnd();
+
+        }
+
         public static async Task<string[]> UntrackedFiles()
         {
 
