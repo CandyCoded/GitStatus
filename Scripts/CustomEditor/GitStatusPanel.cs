@@ -2,6 +2,7 @@
 
 #if UNITY_EDITOR
 using System;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,7 +54,12 @@ namespace CandyCoded.GitStatus
                     else
                     {
 
-                        Git.CheckoutBranch(GitStatus.branches[selectedBranch]);
+                        Task.Run(async () =>
+                        {
+
+                            await Git.CheckoutBranch(GitStatus.branches[selectedBranch]);
+
+                        });
 
                     }
 
