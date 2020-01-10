@@ -1,10 +1,10 @@
 // Copyright (c) Scott Doxey. All Rights Reserved. Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Debug = UnityEngine.Debug;
 
 namespace CandyCoded.GitStatus
 {
@@ -93,7 +93,7 @@ namespace CandyCoded.GitStatus
             if (process?.StandardError.ReadLine() is string line && line.StartsWith("error: pathspec"))
             {
 
-                Debug.LogError("File not tracked by git.");
+                throw new Exception("File not tracked by git.");
 
             }
 
