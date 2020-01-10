@@ -25,7 +25,18 @@ namespace CandyCoded.GitStatus
         private static async void DiscardChanges()
         {
 
-            await Git.DiscardChanges(GetSelectedPath());
+            try
+            {
+
+                await Git.DiscardChanges(GetSelectedPath());
+
+            }
+            catch (Exception error)
+            {
+
+                EditorUtility.DisplayDialog("Error", error.Message, "Ok");
+
+            }
 
         }
 
@@ -49,8 +60,18 @@ namespace CandyCoded.GitStatus
                 "Yes",
                 "Cancel"))
             {
+                try
+                {
 
-                await Git.DiscardChanges(GetSelectedPath());
+                    await Git.DiscardChanges(GetSelectedPath());
+
+                }
+                catch (Exception error)
+                {
+
+                    EditorUtility.DisplayDialog("Error", error.Message, "Ok");
+
+                }
 
             }
 
