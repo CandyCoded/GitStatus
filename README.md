@@ -8,6 +8,14 @@
 <br>
 <img src="Screenshots/projectpanel.png" width="400">
 
+## Features
+
+- Asset status icons
+- Branch switching
+- Discard changes to files or folder
+- Editor status panel
+- MacOS and Windows support 🎉
+
 ## Install
 
 ### Unity Package Manager
@@ -39,3 +47,4 @@
     }
   ]
 }
+```
