@@ -18,7 +18,7 @@ namespace CandyCoded.GitStatus
         public static string GitPath => "/usr/local/bin/git";
 #endif
 
-        public static Task<Process> GenerateProcess(string path, string arguments)
+        private static Task<Process> GenerateProcess(string path, string arguments)
         {
 
             return Task.Run(() => Process.Start(new ProcessStartInfo
@@ -60,13 +60,6 @@ namespace CandyCoded.GitStatus
 
         }
 
-        public static void CheckoutBranch(string branch)
-        {
-
-            GenerateProcess(GitPath, $"checkout {branch}");
-
-        }
-
         public static async Task<string[]> ChangedFiles()
         {
 
@@ -85,6 +78,27 @@ namespace CandyCoded.GitStatus
 
         }
 
+        public static void CheckoutBranch(string branch)
+        {
+
+            GenerateProcess(GitPath, $"checkout {branch}");
+
+        }
+
+        public static async Task DiscardChanges(string path)
+        {
+
+            var process = await GenerateProcess(GitPath, $@"checkout ""{path}""");
+
+            if (process?.StandardError.ReadLine() is string line && line.StartsWith("error: pathspec"))
+            {
+
+                Debug.LogError("File not tracked by git.");
+
+            }
+
+        }
+
         public static async Task<string[]> UntrackedFiles()
         {
 
@@ -100,20 +114,6 @@ namespace CandyCoded.GitStatus
             }
 
             return changes.ToArray();
-
-        }
-
-        public static async Task DiscardChanges(string path)
-        {
-
-            var process = await GenerateProcess(GitPath, $@"checkout ""{path}""");
-
-            if (process?.StandardError.ReadLine() is string line && line.StartsWith("error: pathspec"))
-            {
-
-                Debug.LogError("File not tracked by git.");
-
-            }
 
         }
 
