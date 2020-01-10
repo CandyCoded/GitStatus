@@ -2,6 +2,7 @@
 
 #if UNITY_EDITOR
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -33,6 +34,10 @@ namespace CandyCoded.GitStatus
                     {
 
                         await Git.Init();
+
+                        await GitIgnore.Create(Directory.GetCurrentDirectory());
+
+                        GitStatus.Update();
 
                     });
 
