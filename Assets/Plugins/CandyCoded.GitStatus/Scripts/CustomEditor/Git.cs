@@ -18,7 +18,7 @@ namespace CandyCoded.GitStatus
         public static string GitPath => "/usr/local/bin/git";
 #endif
 
-        private static Task<Process> GenerateProcess(string path, string arguments)
+        private static Task<Process> GenerateProcessAsync(string path, string arguments)
         {
 
             return Task.Run(() => Process.Start(new ProcessStartInfo
@@ -36,7 +36,7 @@ namespace CandyCoded.GitStatus
         public static async Task<string> Branch()
         {
 
-            var process = await GenerateProcess(GitPath, "rev-parse --abbrev-ref HEAD");
+            var process = await GenerateProcessAsync(GitPath, "rev-parse --abbrev-ref HEAD");
 
             return process?.StandardOutput.ReadLine();
 
@@ -45,7 +45,7 @@ namespace CandyCoded.GitStatus
         public static async Task<string[]> Branches()
         {
 
-            var process = await GenerateProcess(GitPath, "for-each-ref --format='%(refname:short)' refs/heads");
+            var process = await GenerateProcessAsync(GitPath, "for-each-ref --format='%(refname:short)' refs/heads");
 
             var branches = new List<string>();
 
@@ -63,7 +63,7 @@ namespace CandyCoded.GitStatus
         public static async Task<string[]> ChangedFiles()
         {
 
-            var process = await GenerateProcess(GitPath, "status --short --untracked-files=no --porcelain");
+            var process = await GenerateProcessAsync(GitPath, "status --short --untracked-files=no --porcelain");
 
             var changes = new List<string>();
 
@@ -81,14 +81,14 @@ namespace CandyCoded.GitStatus
         public static async Task CheckoutBranch(string branch)
         {
 
-            await GenerateProcess(GitPath, $"checkout {branch}");
+            await GenerateProcessAsync(GitPath, $"checkout {branch}");
 
         }
 
         public static async Task DiscardChanges(string path)
         {
 
-            var process = await GenerateProcess(GitPath, $@"checkout ""{path}""");
+            var process = await GenerateProcessAsync(GitPath, $@"checkout ""{path}""");
 
             if (process?.StandardError.ReadLine() is string line && line.StartsWith("error: pathspec"))
             {
@@ -102,14 +102,14 @@ namespace CandyCoded.GitStatus
         public static async Task Init()
         {
 
-            await GenerateProcess(GitPath, "init");
+            await GenerateProcessAsync(GitPath, "init");
 
         }
 
         public static async Task<string> Status()
         {
 
-            var process = await GenerateProcess(GitPath, "status");
+            var process = await GenerateProcessAsync(GitPath, "status");
 
             if (process?.StandardError.ReadLine() is string line && line.StartsWith("fatal: not a git repository"))
             {
@@ -125,7 +125,7 @@ namespace CandyCoded.GitStatus
         public static async Task<string[]> UntrackedFiles()
         {
 
-            var process = await GenerateProcess(GitPath, "ls-files --others --exclude-standard");
+            var process = await GenerateProcessAsync(GitPath, "ls-files --others --exclude-standard");
 
             var changes = new List<string>();
 
