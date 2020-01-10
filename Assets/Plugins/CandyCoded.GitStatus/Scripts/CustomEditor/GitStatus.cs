@@ -12,6 +12,10 @@ namespace CandyCoded.GitStatus
     public static class GitStatus
     {
 
+        public static bool isGitRepo;
+
+        public static string status = "";
+
         public static string branch = "HEAD";
 
         public static string[] branches = { };
@@ -41,6 +45,23 @@ namespace CandyCoded.GitStatus
 
         public static async void UpdateAsync()
         {
+
+            try
+            {
+
+                status = await Git.Status();
+
+                isGitRepo = true;
+
+            }
+            catch (Exception error)
+            {
+
+                status = error.Message;
+
+                isGitRepo = false;
+
+            }
 
             branch = await Git.Branch();
             branches = await Git.Branches();

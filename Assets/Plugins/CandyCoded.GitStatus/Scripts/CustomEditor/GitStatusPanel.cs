@@ -23,6 +23,25 @@ namespace CandyCoded.GitStatus
         private void OnGUI()
         {
 
+            if (!GitStatus.isGitRepo)
+            {
+
+                if (GUILayout.Button("Initialize git repo"))
+                {
+
+                    Task.Run(async () =>
+                    {
+
+                        await Git.Init();
+
+                    });
+
+                }
+
+                return;
+
+            }
+
             GUILayout.Space(5);
 
             var selectedBranch = Array.IndexOf(GitStatus.branches, GitStatus.branch);
