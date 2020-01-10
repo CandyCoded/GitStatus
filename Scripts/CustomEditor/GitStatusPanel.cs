@@ -35,7 +35,7 @@ namespace CandyCoded.GitStatus
 
                         await Git.Init();
 
-                        await GitIgnore.Create(Directory.GetCurrentDirectory());
+                        await GitIgnore.Create(Environment.CurrentDirectory);
 
                         GitStatus.Update();
 
