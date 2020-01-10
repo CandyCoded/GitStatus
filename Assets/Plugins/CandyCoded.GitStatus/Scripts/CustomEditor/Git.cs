@@ -78,10 +78,10 @@ namespace CandyCoded.GitStatus
 
         }
 
-        public static void CheckoutBranch(string branch)
+        public static async Task CheckoutBranch(string branch)
         {
 
-            GenerateProcess(GitPath, $"checkout {branch}");
+            await GenerateProcess(GitPath, $"checkout {branch}");
 
         }
 
