@@ -2,6 +2,7 @@
 
 #if UNITY_EDITOR
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -22,6 +23,29 @@ namespace CandyCoded.GitStatus
 
         private void OnGUI()
         {
+
+            if (!GitStatus.isGitRepo)
+            {
+
+                if (GUILayout.Button("Initialize git repo"))
+                {
+
+                    Task.Run(async () =>
+                    {
+
+                        await Git.Init();
+
+                        await GitIgnore.Create(Directory.GetCurrentDirectory());
+
+                        GitStatus.Update();
+
+                    });
+
+                }
+
+                return;
+
+            }
 
             GUILayout.Space(5);
 
