@@ -18,10 +18,10 @@ namespace CandyCoded.GitStatus
         public static string GitPath => "/usr/local/bin/git";
 #endif
 
-        private static Task<Process> GenerateProcess(string path, string arguments)
+        private static Process GenerateProcess(string path, string arguments)
         {
 
-            return Task.Run(() => Process.Start(new ProcessStartInfo
+            return Process.Start(new ProcessStartInfo
             {
                 FileName = path,
                 Arguments = arguments,
@@ -29,7 +29,7 @@ namespace CandyCoded.GitStatus
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true
-            }));
+            });
 
         }
 
