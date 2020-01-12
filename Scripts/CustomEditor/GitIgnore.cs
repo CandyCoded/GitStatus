@@ -36,9 +36,14 @@ namespace CandyCoded.GitStatus
             using (var stream = response.GetResponseStream())
             {
 
-                await stream.CopyToAsync(content);
+                if (stream != null)
+                {
 
-                File.WriteAllBytes(path, content.ToArray());
+                    await stream.CopyToAsync(content);
+
+                    File.WriteAllBytes(path, content.ToArray());
+
+                }
 
             }
 
