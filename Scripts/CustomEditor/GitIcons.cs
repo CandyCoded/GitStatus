@@ -22,7 +22,9 @@ namespace CandyCoded.GitStatus
             {
                 if (_changed != null)
                 {
+
                     return _changed;
+
                 }
 
                 _changed = new Texture2D(SIZE, SIZE);
