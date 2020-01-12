@@ -4,8 +4,7 @@
 
 [![npm](https://img.shields.io/npm/v/xyz.candycoded.gitstatus)](https://www.npmjs.com/package/xyz.candycoded.gitstatus)
 
-<img src="Screenshots/editorpanel.png" width="400">
-<br>
+<img src="Screenshots/editorpanel.png" width="400"><br>
 <img src="Screenshots/projectpanel.png" width="400">
 
 ## Features
