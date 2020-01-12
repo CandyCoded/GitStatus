@@ -1,9 +1,8 @@
 {
   "name": "xyz.candycoded.gitstatus",
   "displayName": "GitStatus",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "unity": "2019.2",
-  "unityRelease": "13f1",
   "description": "Unity editor panel that displays the current git status.",
   "license": "MIT",
   "keywords": [
