@@ -18,6 +18,15 @@ namespace CandyCoded.GitStatus
         public static async Task Create(string directory)
         {
 
+            var path = Path.Combine(directory, FILENAME);
+
+            if (File.Exists(path))
+            {
+
+                return;
+
+            }
+
             var request = WebRequest.Create(URL);
 
             var response = await request.GetResponseAsync();
@@ -29,7 +38,7 @@ namespace CandyCoded.GitStatus
 
                 await stream.CopyToAsync(content);
 
-                File.WriteAllBytes(Path.Combine(directory, FILENAME), content.ToArray());
+                File.WriteAllBytes(path, content.ToArray());
 
             }
 
