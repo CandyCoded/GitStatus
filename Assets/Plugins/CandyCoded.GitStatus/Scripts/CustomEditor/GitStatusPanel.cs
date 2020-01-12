@@ -85,6 +85,8 @@ namespace CandyCoded.GitStatus
 
                         });
 
+                        EditorApplication.ExecuteMenuItem("Assets/Refresh");
+
                     }
 
                 }
