@@ -13,9 +13,9 @@ namespace CandyCoded.GitStatus
     {
 
 #if UNITY_EDITOR_WIN
-        public static string GitPath => @"C:\Program Files\Git\bin\git.exe";
+        private static string GitPath => @"C:\Program Files\Git\bin\git.exe";
 #else
-        public static string GitPath => "/usr/local/bin/git";
+        private static string GitPath => "/usr/local/bin/git";
 #endif
 
         private static Process GenerateProcess(string path, string arguments)
