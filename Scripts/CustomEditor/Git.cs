@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CandyCoded.GitStatus
@@ -18,6 +19,8 @@ namespace CandyCoded.GitStatus
         private static string GitPath => "/usr/local/bin/git";
 #endif
 
+        private static string RepoPath => $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}";
+
         public static Process GenerateProcess(string path, string arguments)
         {
 
@@ -25,6 +28,7 @@ namespace CandyCoded.GitStatus
             {
                 FileName = path,
                 Arguments = arguments,
+                WorkingDirectory = RepoPath,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
