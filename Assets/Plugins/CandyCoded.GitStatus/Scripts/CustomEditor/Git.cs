@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace CandyCoded.GitStatus
 {
@@ -15,8 +16,12 @@ namespace CandyCoded.GitStatus
 
 #if UNITY_EDITOR_WIN
         private static string GitPath => @"C:\Program Files\Git\bin\git.exe";
+
+        private static string GitLFSPath => @"C:\Program Files\Git LFS\git-lfs.exe";
 #else
         private static string GitPath => "/usr/local/bin/git";
+
+        private static string GitLFSPath => "/usr/local/bin/git-lfs";
 #endif
 
         private static string RepoPath => $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}";
@@ -110,10 +115,65 @@ namespace CandyCoded.GitStatus
 
         }
 
+        public static async Task ForceUnlockFile(string path)
+        {
+
+            var process =
+                await GenerateProcessAsync(GitLFSPath,
+                    $@"unlock ""{path.Replace(RepoPath, "")}"" --force");
+
+            process?.WaitForExit();
+
+        }
+
         public static async Task Init()
         {
 
             await GenerateProcessAsync(GitPath, "init");
+
+        }
+
+        public static async Task<string[]> LockedFiles()
+        {
+
+            var process = await GenerateProcessAsync(GitLFSPath, "locks --json");
+
+            process?.WaitForExit();
+
+            var locked = new List<string>();
+
+            var locks = JsonUtility.FromJson<Locks>($@"{{""locks"":{process?.StandardOutput.ReadToEnd()}}}").locks;
+
+            if (locks != null)
+            {
+
+                for (var i = 0; i < locks.Length; i += 1)
+                {
+
+                    locked.Add(locks[i].path);
+
+                }
+
+            }
+
+            return locked.ToArray();
+
+        }
+
+        public static async Task LockFile(string path)
+        {
+
+            var process = await GenerateProcessAsync(GitLFSPath,
+                $@"lock ""{path.Replace(RepoPath, "")}""");
+
+            if (process?.StandardError.ReadLine() is string line && line.StartsWith("Lock failed: missing protocol"))
+            {
+
+                throw new Exception("Locking requires git repo has been pushed to a remote.");
+
+            }
+
+            process?.WaitForExit();
 
         }
 
@@ -130,6 +190,16 @@ namespace CandyCoded.GitStatus
             }
 
             return process?.StandardOutput.ReadToEnd();
+
+        }
+
+        public static async Task UnlockFile(string path)
+        {
+
+            var process = await GenerateProcessAsync(GitLFSPath,
+                $@"unlock ""{path.Replace(RepoPath, "")}""");
+
+            process?.WaitForExit();
 
         }
 

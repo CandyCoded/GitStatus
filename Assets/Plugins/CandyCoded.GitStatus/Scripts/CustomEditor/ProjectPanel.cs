@@ -63,6 +63,12 @@ namespace CandyCoded.GitStatus
                 GUI.DrawTexture(rect, GitIcons.Untracked, ScaleMode.ScaleToFit);
 
             }
+            else if (GitStatus.lockedFiles.Contains(path))
+            {
+
+                GUI.DrawTexture(rect, GitIcons.Locked, ScaleMode.ScaleToFit);
+
+            }
 
         }
 

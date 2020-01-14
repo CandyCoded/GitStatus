@@ -3,6 +3,7 @@
 #if UNITY_EDITOR
 using System;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 
 namespace CandyCoded.GitStatus
@@ -13,10 +14,17 @@ namespace CandyCoded.GitStatus
 
         private const int PRIORITY = 5000;
 
-        private static string GetSelectedPath()
+        private static string GetSelectedAbsolutePath()
         {
 
-            return Path.Combine(Environment.CurrentDirectory, AssetDatabase.GetAssetPath(Selection.activeObject));
+            return Path.Combine(Environment.CurrentDirectory, GetSelectedRelativePath());
+
+        }
+
+        private static string GetSelectedRelativePath()
+        {
+
+            return AssetDatabase.GetAssetPath(Selection.activeObject);
 
         }
 
@@ -28,7 +36,7 @@ namespace CandyCoded.GitStatus
             try
             {
 
-                await Git.DiscardChanges(GetSelectedPath());
+                await Git.DiscardChanges(GetSelectedAbsolutePath());
 
             }
             catch (Exception error)
@@ -45,7 +53,8 @@ namespace CandyCoded.GitStatus
         private static bool ValidateDiscardChanges()
         {
 
-            return Selection.activeObject && File.Exists(GetSelectedPath());
+            return Selection.activeObject && File.Exists(GetSelectedAbsolutePath()) &&
+                   GitStatus.changedFiles.Contains(GetSelectedRelativePath());
 
         }
 
@@ -63,7 +72,7 @@ namespace CandyCoded.GitStatus
                 try
                 {
 
-                    await Git.DiscardChanges(GetSelectedPath());
+                    await Git.DiscardChanges(GetSelectedAbsolutePath());
 
                 }
                 catch (Exception error)
@@ -82,7 +91,84 @@ namespace CandyCoded.GitStatus
         private static bool ValidateDiscardAllChanges()
         {
 
-            return Selection.activeObject && Directory.Exists(GetSelectedPath());
+            return Selection.activeObject && Directory.Exists(GetSelectedAbsolutePath());
+
+        }
+
+        [MenuItem("Git/Lock File", true, PRIORITY)]
+        [MenuItem("Assets/Lock File", true, PRIORITY)]
+        private static bool ValidateLockFile()
+        {
+
+            return Selection.activeObject && File.Exists(GetSelectedAbsolutePath()) &&
+                   !GitStatus.lockedFiles.Contains(GetSelectedRelativePath());
+
+        }
+
+        [MenuItem("Git/Lock File", false, PRIORITY)]
+        [MenuItem("Assets/Lock File", false, PRIORITY)]
+        private static async void LockFile()
+        {
+
+            try
+            {
+
+                await Git.LockFile(GetSelectedAbsolutePath());
+
+            }
+            catch (Exception error)
+            {
+
+                EditorUtility.DisplayDialog("Error", error.Message, "Ok");
+
+            }
+
+        }
+
+        [MenuItem("Git/Unlock File", true, PRIORITY)]
+        [MenuItem("Assets/Unlock File", true, PRIORITY)]
+        private static bool ValidateUnlockFile()
+        {
+
+            return Selection.activeObject && File.Exists(GetSelectedAbsolutePath()) &&
+                   GitStatus.lockedFiles.Contains(GetSelectedRelativePath());
+
+        }
+
+        [MenuItem("Git/Unlock File", false, PRIORITY)]
+        [MenuItem("Assets/Unlock File", false, PRIORITY)]
+        private static async void UnlockFile()
+        {
+
+            await Git.UnlockFile(GetSelectedAbsolutePath());
+
+        }
+
+        [MenuItem("Git/Force Unlock File", true, PRIORITY)]
+        [MenuItem("Assets/Force Unlock File", true, PRIORITY)]
+        private static bool ValidateForceUnlockFile()
+        {
+
+            return Selection.activeObject && File.Exists(GetSelectedAbsolutePath()) &&
+                   GitStatus.lockedFiles.Contains(GetSelectedRelativePath());
+
+        }
+
+        [MenuItem("Git/Force Unlock File", false, PRIORITY)]
+        [MenuItem("Assets/Force Unlock File", false, PRIORITY)]
+        private static async void ForceUnlockFile()
+        {
+
+            if (EditorUtility.DisplayDialog(
+                "Force unlock file",
+                $"Are you sure you want to force unlock {Selection.activeObject.name}?",
+                "Yes",
+                "Cancel"))
+            {
+
+                await Git.ForceUnlockFile(GetSelectedAbsolutePath());
+
+            }
 
         }
 

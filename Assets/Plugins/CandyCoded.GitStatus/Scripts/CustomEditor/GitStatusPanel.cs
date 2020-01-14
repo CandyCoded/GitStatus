@@ -94,6 +94,7 @@ namespace CandyCoded.GitStatus
 
             GUILayout.Label($"Number of Changes: {GitStatus.changedFiles?.Length}");
             GUILayout.Label($"Untracked Files: {GitStatus.untrackedFiles?.Length}");
+            GUILayout.Label($"Locked Files: {GitStatus.lockedFiles?.Length}");
             GUILayout.Label($"Last Updated: {GitStatus.lastUpdated}");
 
             if (GUILayout.Button("Refresh"))

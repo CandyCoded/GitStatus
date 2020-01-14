@@ -63,6 +63,31 @@ namespace CandyCoded.GitStatus
 
         }
 
+        private static Texture2D _locked;
+
+        public static Texture2D Locked
+        {
+
+            get
+            {
+                if (_locked != null)
+                {
+
+                    return _locked;
+
+                }
+
+                _locked = new Texture2D(SIZE, SIZE);
+
+                _locked.LoadImage(Convert.FromBase64String(
+                    "iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAyVBMVEUtQZU6TJtte7WapMy6wdzZ3Ovq7PT19vr8/P0/UZ6GksLQ1ef9/f7///9BU5+psdP6+/ybpMz29/qAjL7x8vcxRZers9Q/Up7O0+ZSYqfo6vPn6vNAUp7n6fI0R5jS1ui4vtvb3u2cpc1qeLRWZqmPmcb5+fyiq9BIWaKvt9dEVqGrs9X3+Pt3hLpQYaZVZanp6/TCx+BUZKhMXaRserWkrdHj5fDx8/g8T5yMl8V/i749T52mrtLJzuPHzOKHksJjcrDv8PdNXqVWCyDhAAABVUlEQVR4AezS1YFbMQAEwDXjHp+Z8ZljZuy/qHxJZpaCmhoGfy/DMAzDMAzDsNkdTpfb4/W4XU6H3YZfy+cPBLkrGPD78Mu8vL7x2NvrC34J2/sHT/t4t0G/zy+e9/UJzb5DvCz0DZ3CEV4TCUOfaIzXxaPQJZHkLZIJ6JFK8zbpFLTIcF82ly+8fL8U8rks92WgQ5G7SmULW1a5xF1FqJfwcEelin3VCnd4ElCuxq16A8cadW7VoFrTSynWwimtH5S8TSjWpuTp4LSOh1IbanUpBXs4pxek1IVS75T6OK9PyQGlBhSGI5w3GlIYQCWL0hiXjClZUGhCwTvFJVMvhQkUmlGY47I5hRkUWlDw47IlhYWegytcttKzcE1hg8s2FNZQgAr8bHeOBQAAAAAG+VtPY0cRJCAgICAgICAgICAgICAgICAgICAgICAgICAgMA8AAAAQnY7wX9sqolIAAAAASUVORK5CYII="
+                ));
+
+                return _locked;
+            }
+
+        }
+
     }
 
 }
