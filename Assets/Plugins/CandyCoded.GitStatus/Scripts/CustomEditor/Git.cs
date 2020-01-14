@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CandyCoded.GitStatus
@@ -13,18 +14,21 @@ namespace CandyCoded.GitStatus
     {
 
 #if UNITY_EDITOR_WIN
-        public static string GitPath => "C:\\Program Files\\Git\\cmd\\git.exe";
+        private static string GitPath => @"C:\Program Files\Git\bin\git.exe";
 #else
-        public static string GitPath => "/usr/local/bin/git";
+        private static string GitPath => "/usr/local/bin/git";
 #endif
 
-        private static Process GenerateProcess(string path, string arguments)
+        private static string RepoPath => $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}";
+
+        public static Process GenerateProcess(string path, string arguments)
         {
 
             return Process.Start(new ProcessStartInfo
             {
                 FileName = path,
                 Arguments = arguments,
+                WorkingDirectory = RepoPath,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -33,7 +37,7 @@ namespace CandyCoded.GitStatus
 
         }
 
-        private static Task<Process> GenerateProcessAsync(string path, string arguments)
+        public static Task<Process> GenerateProcessAsync(string path, string arguments)
         {
 
             return Task.Run(() => GenerateProcess(path, arguments));
