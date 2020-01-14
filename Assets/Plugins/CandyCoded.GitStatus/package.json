@@ -3,7 +3,7 @@
   "displayName": "GitStatus",
   "version": "2.0.0",
   "unity": "2019.2",
-  "description": "Unity editor panel that displays the current git status.",
+  "description": "A simple git status panel for Unity.",
   "license": "MIT",
   "keywords": [
     "unity",
