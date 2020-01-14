@@ -6,20 +6,30 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using UnityEditor;
+using UnityEngine;
 
 namespace CandyCoded.GitStatus
 {
 
+    [InitializeOnLoad]
     public static class Git
     {
 
-#if UNITY_EDITOR_WIN
-        private static string GitPath => @"C:\Program Files\Git\bin\git.exe";
-#else
-        private static string GitPath => "/usr/local/bin/git";
-#endif
+        static Git()
+        {
 
-        private static string RepoPath => $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}";
+            GitPath = SystemInfo.operatingSystemFamily.Equals(OperatingSystemFamily.Windows)
+                ? @"C:\Program Files\Git\bin\git.exe"
+                : "/usr/local/bin/git";
+
+            RepoPath = $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}";
+
+        }
+
+        private static string GitPath { get; }
+
+        private static string RepoPath { get; }
 
         public static Process GenerateProcess(string path, string arguments)
         {
