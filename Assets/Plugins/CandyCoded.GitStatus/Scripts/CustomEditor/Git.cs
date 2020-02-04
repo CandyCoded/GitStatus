@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEditor;
-using UnityEngine;
 
 namespace CandyCoded.GitStatus
 {
@@ -19,9 +18,7 @@ namespace CandyCoded.GitStatus
         static Git()
         {
 
-            GitPath = SystemInfo.operatingSystemFamily.Equals(OperatingSystemFamily.Windows)
-                ? @"C:\Program Files\Git\bin\git.exe"
-                : "/usr/local/bin/git";
+            GitPath = GitSettings.GitPath;
 
             RepoPath = $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}";
 
