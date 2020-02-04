@@ -17,7 +17,7 @@ namespace CandyCoded.GitStatus
 
         public static string DefaultGitPath => SystemInfo.operatingSystemFamily.Equals(OperatingSystemFamily.Windows)
             ? @"C:\Program Files\Git\bin\git.exe"
-            : "/usr/local/bin/git";
+            : "/usr/bin/git";
 
         public static string GitPath
         {
