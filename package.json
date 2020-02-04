@@ -1,7 +1,7 @@
 {
   "name": "xyz.candycoded.gitstatus",
   "displayName": "GitStatus",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "unity": "2019.2",
   "description": "A simple git status panel for Unity.",
   "license": "MIT",
