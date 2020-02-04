@@ -60,6 +60,7 @@ namespace CandyCoded.GitStatus
                 "Yes",
                 "Cancel"))
             {
+
                 try
                 {
 
