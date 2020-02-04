@@ -11,7 +11,7 @@ namespace CandyCoded.GitStatus
     public static class GitMenuItems
     {
 
-        private const int PRIORITY = 5000;
+        public const int PRIORITY = 5000;
 
         private static string GetSelectedPath()
         {
