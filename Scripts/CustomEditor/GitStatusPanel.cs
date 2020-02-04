@@ -12,7 +12,7 @@ namespace CandyCoded.GitStatus
     public class GitStatusPanel : EditorWindow
     {
 
-        [MenuItem("Git/Git Status")]
+        [MenuItem("Git/Git Status", false, GitMenuItems.PRIORITY - 100)]
         public static void ShowWindow()
         {
 
