@@ -87,6 +87,23 @@ namespace CandyCoded.GitStatus
 
         }
 
+        [MenuItem("Git/Reset Settings", false, PRIORITY + 100)]
+        public static void ResetSettings()
+        {
+
+            if (EditorUtility.DisplayDialog(
+                "Reset package settings",
+                $"Are you sure you want to reset all package settings?",
+                "Yes",
+                "Cancel"))
+            {
+
+                GitSettings.Reset();
+
+            }
+
+        }
+
     }
 
 }
